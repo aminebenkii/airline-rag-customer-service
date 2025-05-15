@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Air Arabica Customer Service</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="/static/icons/favicon.ico" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+      :root {
+        --primary: #d71920;
+        --primary-dark: #b5151b;
+        --secondary: #2c3e50;
+        --accent: #3498db;
+      }
+
+      body {
+        font-family: 'Inter', sans-serif;
+      }
+
+      /* Enhanced Animations */
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+      }
+
+      .message-animate {
+        animation: slideIn 0.3s ease-out forwards;
+      }
+
+      .typing-indicator {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        padding: 8px 12px;
+        background: #f3f4f6;
+        border-radius: 16px;
+        width: fit-content;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        background: #9ca3af;
+        border-radius: 50%;
+        animation: bounce 1.4s infinite ease-in-out;
+      }
+
+      .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+      .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+      @keyframes bounce {
+        0%, 80%, 100% { transform: scale(0); }
+        40% { transform: scale(1); }
+      }
+
+      .chat-bubble {
+        position: relative;
+        max-width: 85%;
+        padding: 12px 16px;
+        border-radius: 18px;
+        margin: 4px 0;
+        line-height: 1.5;
+      }
+
+      .chat-bubble::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        width: 12px;
+        height: 12px;
+      }
+
+      .chat-bubble.user {
+        background: var(--primary);
+        color: white;
+        margin-left: auto;
+        border-bottom-right-radius: 4px;
+      }
+
+      .chat-bubble.bot {
+        background: #f3f4f6;
+        color: var(--secondary);
+        margin-right: auto;
+        border-bottom-left-radius: 4px;
+      }
+
+      .quick-suggestion {
+        transition: all 0.2s ease;
+        border: 1px solid #e5e7eb;
+      }
+
+      .quick-suggestion:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+
+      .input-wrapper {
+        position: relative;
+        background: white;
+        border-radius: 24px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      }
+
+      .input-wrapper:focus-within {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      }
+
+      .scrollbar-custom::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .scrollbar-custom::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 3px;
+      }
+
+      .scrollbar-custom::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 3px;
+      }
+
+      .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+
+      .bullet-list {
+      list-style-type: disc;
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+      list-style-position: inside;
+    }
+
+    @media (max-width: 640px) {
+      
+      #quick-suggestions {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #f9fafb;
+        flex-shrink: 0; /* Prevent shrinking */
+      }
+
+
+      #quick-suggestions button {
+        flex: 0 0 auto;
+        min-width: 120px;
+        min-height: 40px; /* Fixed vertical size */
+        padding: 8px 12px;
+        font-size: 12px;
+        white-space: nowrap;
+      }
+    }
+
+    @media (max-width: 640px) {
+      header .max-w-4xl {
+        padding-top: 1rem;
+        padding-bottom: 0.75rem;
+      }
+
+      header h1 {
+        font-size: 1rem; /* Super small title */
+        line-height: 2rem;
+      }
+
+      header p {
+        font-size: 0.75rem; /* Tiny tagline */
+      }
+
+      header img {
+        height: 24px;
+        width: 24px; /* Smaller logo */
+      }
+
+      #lang-en, #lang-fr, #lang-ar {
+        padding: 4px 8px;
+        font-size: 10px;
+      }
+    }
+
+
+    @font-face {
+      font-family: 'AirArabia';
+      src: url('/static/fonts/airarabia-bold.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
+
+
+    </style>
+
+  </head>
+
+
+<body class="h-screen overflow-hidden flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
+  <!-- Enhanced Header -->
+  <header class="bg-gradient-to-r from-[#d71920] to-[#b5151b] text-white shadow-md">
+    <div class="max-w-4xl mx-auto px-4 py-8">
+      <div class="flex flex-col items-center text-center space-y-5">
+        <!-- Logo Section -->
+        <div class="flex items-center gap-3">
+          <img src="/static/icons/airarabica-logo.png" alt="Air Arabica Logo" class="h-10 w-10 rounded-full shadow-md">
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight drop-shadow-md" style="font-family: 'AirArabia', sans-serif;" >
+            Air Arabica
+          </h1>
+        </div>
+        <!-- Tagline -->
+        <p class="text-lg sm:text-xl text-white/90 font-medium drop-shadow-sm" style="font-family: 'AirArabia', sans-serif;">
+          Your 24/7 Virtual Travel Assistant
+        </p>
+        <!-- Language Selector -->
+        <div class="flex flex-wrap justify-center gap-3 mt-4">
+          <button id="lang-en" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
+            <i class="fas fa-globe mr-2"></i>English
+          </button>
+          <button id="lang-fr" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
+            <i class="fas fa-globe mr-2"></i>Français
+          </button>
+          <button id="lang-ar" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
+            <i class="fas fa-globe mr-2"></i>العربية
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+
+    <!-- Enhanced Chat Container -->
+    <main class="flex-1 flex flex-col justify-between items-center px-4 pt-0 pb-4 min-h-0">
+
+      <div class="w-full max-w-4xl bg-white rounded-b-2xl shadow-xl border border-gray-100 flex flex-col flex-1 overflow-hidden min-h-0">
+        <!-- Chat Messages with Custom Scrollbar -->
+        <div id="chat-messages" class="flex-grow flex flex-col gap-4 p-6 overflow-y-auto scrollbar-custom">
+          <!-- Test message to verify visibility -->
+          <!-- <div class="chat-bubble bot message-animate">
+            👋 Hi! I'm your Air Arabica assistant. How can I help you today?
+          </div> -->
+        </div>
+
+
+        <!-- Enhanced Quick Suggestions -->
+        <div id="quick-suggestions" class="grid grid-cols-4 gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
+          <button id="btn-booking" class=" quick-suggestion px-4 py-2 bg-white rounded-full text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+            <i class="fas fa-calendar-alt text-[#d71920]"></i>
+            <span></span>
+          </button>
+          <button id="btn-baggage" class="quick-suggestion px-4 py-2 bg-white rounded-full text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+            <i class="fas fa-suitcase-rolling text-[#d71920]"></i>
+            <span></span>
+          </button>
+          <button id="btn-delay" class="quick-suggestion px-4 py-2 bg-white rounded-full text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+            <i class="fas fa-exclamation-triangle text-[#d71920]"></i>
+            <span></span>
+          </button>
+          <button id="btn-assistance" class="quick-suggestion px-4 py-2 bg-white rounded-full text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
+            <i class="fas fa-wheelchair text-[#d71920]"></i>
+            <span></span>
+          </button>
+        </div>
+
+
+        <!-- Enhanced Chat Input -->
+        <div class="p-3 border-t border-gray-100 bg-white rounded-b-2xl">
+          <div class="input-wrapper flex items-center gap-2 p-1 w-full">
+            <button class="p-2 text-gray-500 hover:text-gray-700 transition-colors">
+              <i class="far fa-smile text-xl"></i>
+            </button>
+            <input 
+              id="chat-input" 
+              type="text" 
+              placeholder="Type your message..." 
+              class="flex-1 min-w-0 px-3 py-1 text-base bg-transparent border-none focus:outline-none focus:ring-0" 
+            />
+            <button 
+              id="send-button" 
+              class="w-12 h-12 flex-shrink-0 flex items-center justify-center bg-[#d71920] text-white rounded-full hover:bg-[#b5151b] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <i class="fas fa-paper-plane text-lg"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="text-center py-2 bg-white border-t border-gray-100">
+      <div class="max-w-4xl mx-auto px-4">
+        <p class="text-[8px] sm:text-sm text-gray-600">
+          <span class="font-medium">Air Arabica</span> — 
+          <span class="text-[#d71920]">AI-Powered Customer Service</span> • 
+          Made with  <i class="fas fa-heart text-[#d71920]"></i>  by Amine BENKIRANE
+        </p>
+      </div>
+    </footer>
+
+    <script src="./static/js/script.js" defer></script>
+  </body>
+</html>
