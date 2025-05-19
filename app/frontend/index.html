@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,258 +9,176 @@
     <link rel="icon" href="/static/icons/favicon.ico" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-
-    <style>
-      :root {
-        --primary: #d71920;
-        --primary-dark: #b5151b;
-        --secondary: #2c3e50;
-        --accent: #3498db;
-      }
-
-      body {
-        font-family: 'Inter', sans-serif;
-      }
-
-      /* Enhanced Animations */
-      @keyframes slideIn {
-        from { opacity: 0; transform: translateY(10px); }
-        to { opacity: 1; transform: translateY(0); }
-      }
-
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.05); }
-        100% { transform: scale(1); }
-      }
-
-      .message-animate {
-        animation: slideIn 0.3s ease-out forwards;
-      }
-
-      .typing-indicator {
-        display: flex;
-        align-items: center;
-        gap: 4px;
-        padding: 8px 12px;
-        background: #f3f4f6;
-        border-radius: 16px;
-        width: fit-content;
-      }
-
-      .typing-dot {
-        width: 8px;
-        height: 8px;
-        background: #9ca3af;
-        border-radius: 50%;
-        animation: bounce 1.4s infinite ease-in-out;
-      }
-
-      .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-      .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-      @keyframes bounce {
-        0%, 80%, 100% { transform: scale(0); }
-        40% { transform: scale(1); }
-      }
-
-      .chat-bubble {
-        position: relative;
-        max-width: 85%;
-        padding: 12px 16px;
-        border-radius: 18px;
-        margin: 4px 0;
-        line-height: 1.5;
-      }
-
-      .chat-bubble::before {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        width: 12px;
-        height: 12px;
-      }
-
-      .chat-bubble.user {
-        background: var(--primary);
-        color: white;
-        margin-left: auto;
-        border-bottom-right-radius: 4px;
-      }
-
-      .chat-bubble.bot {
-        background: #f3f4f6;
-        color: var(--secondary);
-        margin-right: auto;
-        border-bottom-left-radius: 4px;
-      }
-
-      .quick-suggestion {
-        transition: all 0.2s ease;
-        border: 1px solid #e5e7eb;
-      }
-
-      .quick-suggestion:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
-      }
-
-      .input-wrapper {
-        position: relative;
-        background: white;
-        border-radius: 24px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-      }
-
-      .input-wrapper:focus-within {
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      }
-
-      .scrollbar-custom::-webkit-scrollbar {
-        width: 6px;
-      }
-
-      .scrollbar-custom::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 3px;
-      }
-
-      .scrollbar-custom::-webkit-scrollbar-thumb {
-        background: #c1c1c1;
-        border-radius: 3px;
-      }
-
-      .scrollbar-custom::-webkit-scrollbar-thumb:hover {
-        background: #a8a8a8;
-      }
-
-      .bullet-list {
-      list-style-type: disc;
-      padding-left: 0.75rem;
-      padding-right: 0.75rem;
-      list-style-position: inside;
-    }
-
-    @media (max-width: 640px) {
-      
-      #quick-suggestions {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        gap: 8px;
-        padding: 8px 16px;
-        background: #f9fafb;
-        flex-shrink: 0; /* Prevent shrinking */
-      }
-
-
-      #quick-suggestions button {
-        flex: 0 0 auto;
-        min-width: 120px;
-        min-height: 40px; /* Fixed vertical size */
-        padding: 8px 12px;
-        font-size: 12px;
-        white-space: nowrap;
-      }
-    }
-
-    @media (max-width: 640px) {
-      header .max-w-4xl {
-        padding-top: 1rem;
-        padding-bottom: 0.75rem;
-      }
-
-      header h1 {
-        font-size: 1rem; /* Super small title */
-        line-height: 2rem;
-      }
-
-      header p {
-        font-size: 0.75rem; /* Tiny tagline */
-      }
-
-      header img {
-        height: 24px;
-        width: 24px; /* Smaller logo */
-      }
-
-      #lang-en, #lang-fr, #lang-ar {
-        padding: 4px 8px;
-        font-size: 10px;
-      }
-    }
-
-
-    @font-face {
-      font-family: 'AirArabia';
-      src: url('/static/fonts/airarabia-bold.ttf') format('truetype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    html, body {
-      height: 100%;
-    }
-
-    body {
-      min-height: 100vh;
-      height: 100vh;
-      height: calc(var(--vh, 1vh) * 100);
-    }
-
-
-    </style>
-
+    <link rel="stylesheet" href="/static/css/styles.css">
   </head>
 
 
-<body class="h-screen overflow-hidden flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
-  <!-- Enhanced Header -->
-  <header class="bg-gradient-to-r from-[#d71920] to-[#b5151b] text-white shadow-md">
-    <div class="max-w-4xl mx-auto px-4 py-8">
-      <div class="flex flex-col items-center text-center space-y-5">
-        <!-- Logo Section -->
-        <div class="flex items-center gap-3">
-          <img src="/static/icons/airarabica-logo.png" alt="Air Arabica Logo" class="h-10 w-10 rounded-full shadow-md">
-          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight drop-shadow-md" style="font-family: 'AirArabia', sans-serif;" >
-            Air Arabica
-          </h1>
-        </div>
-        <!-- Tagline -->
-        <p class="text-lg sm:text-xl text-white/90 font-medium drop-shadow-sm" style="font-family: 'AirArabia', sans-serif;">
-          Your 24/7 Virtual Travel Assistant
-        </p>
-        <!-- Language Selector -->
-        <div class="flex flex-wrap justify-center gap-3 mt-4">
-          <button id="lang-en" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
-            <i class="fas fa-globe mr-2"></i>English
-          </button>
-          <button id="lang-fr" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
-            <i class="fas fa-globe mr-2"></i>Français
-          </button>
-          <button id="lang-ar" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
-            <i class="fas fa-globe mr-2"></i>العربية
-          </button>
-        </div>
-      </div>
-    </div>
-  </header>
+  <body class="h-screen overflow-hidden flex flex-col bg-gradient-to-br from-gray-50 to-gray-100 text-gray-800">
+    <!-- This is the main page container taking full viewport height with a vertical layout and light gradient background -->
+
+    <!-- flex flex-col: Flexbox layout with vertical stacking of child elements -->
+    <!-- overflow-hidden: Prevents scrollbars if content is managed elsewhere -->
+    <!-- h-screen: Sets container height to full viewport height (100vh) -->
+
+    <!-- bg-gradient-to-br: Gradient background from top-left to bottom-right -->
+    <!-- from-gray-50 to-gray-100: Subtle light gray gradient colors -->
+    <!-- text-gray-800: Dark global text color for readability -->
+
+ 
+    <header class="bg-gradient-to-r from-[#d71920] to-[#b5151b] text-white shadow-md">
+    <!-- This is the header container with a horizontal red gradient, white text, and a shadow for elevation -->
+
+    <!-- bg-gradient-to-r: Gradient background from left to right -->
+    <!-- from-[#d71920]: Start gradient color (custom red) -->
+    <!-- to-[#b5151b]: End gradient color (darker custom red) -->
+    <!-- text-white: White text color for contrast -->
+    <!-- shadow-md: Medium drop shadow for elevation effect -->
 
 
-    <!-- Enhanced Chat Container -->
+      <div class="max-w-4xl mx-auto px-4 py-8 flex flex-col items-center text-center space-y-5">
+      <!-- This is the main content wrapper inside the header, centering content horizontally, stacking it vertically, and adding padding and spacing -->
+
+      <!-- flex flex-col: Enables Flexbox layout and stacks child elements vertically -->
+      <!-- items-center: Horizontally centers child elements within the flex container -->
+      <!-- text-center: Centers the text inside each child element -->
+
+      <!-- space-y-5: Adds vertical spacing of 1.25rem (5 * 0.25rem = 20px) between child elements -->
+
+      <!-- px-4: Adds horizontal padding of 1rem (4 * 0.25rem = 16px) on left and right sides -->
+      <!-- py-8: Adds vertical padding of 2rem (8 * 0.25rem = 32px) on top and bottom -->
+      <!-- max-w-4xl: Limits the container’s width to 56rem (896px) -->
+      <!-- mx-auto: Centers the container horizontally by applying automatic left and right margins -->
+
+
+          <!-- Logo Section -->
+          <div class="flex items-center gap-3">
+            <img src="/static/icons/airarabica-logo.png" alt="Air Arabica Logo" class="h-10 w-10 rounded-full shadow-md">
+            <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight leading-tight drop-shadow-md" style="font-family: 'AirArabia', sans-serif;" >
+              Air Arabica
+            </h1>
+
+          <!-- This is the logo section: horizontally aligns the logo image and brand name with spacing and visual styling -->
+
+          <!-- flex: Places the logo image and title text side by side (horizontal layout) -->
+          <!-- items-center: Vertically centers the image and text within the div -->
+          <!-- gap-3: Adds horizontal space of 0.75rem (3 * 0.25rem = 12px) between image and text -->
+
+          <!-- h-10 w-10: Sets the logo image size to 2.5rem (10 * 0.25rem = 40px) width and height -->
+          <!-- rounded-full: Makes the image perfectly circular -->
+          <!-- shadow-md: Adds a medium shadow to the image for visual elevation -->
+
+          <!-- text-4xl: Sets the base font size of the title to 2.25rem (36px) -->
+          <!-- sm:text-5xl: On small screens and up, increases font size to 3rem (48px) -->
+          <!-- font-extrabold: Makes the title text very bold -->
+          <!-- tracking-tight: Reduces letter spacing for tighter appearance -->
+          <!-- leading-tight: Reduces line height for a more compact vertical appearance -->
+          <!-- drop-shadow-md: Adds a medium shadow to the text for better contrast with the background -->
+          <!-- style="font-family: 'AirArabia', sans-serif;": Uses the custom AirArabia font, fallback to sans-serif if unavailable -->
+
+          
+          </div>
+
+          <!-- Tagline -->
+          <p class="text-lg sm:text-xl text-white/90 font-medium drop-shadow-sm" style="font-family: 'AirArabia', sans-serif;">
+            Your 24/7 Virtual Travel Assistant
+          <!-- This is the tagline section: provides a short descriptive sentence with responsive font sizing and subtle styling -->
+
+          <!-- text-lg: Base font size set to 1.125rem (18px) -->
+          <!-- sm:text-xl: On small screens and up, increases font size to 1.25rem (20px) -->
+
+          <!-- text-white/90: White text color with 90% opacity for a softer, less harsh appearance -->
+          <!-- font-medium: Medium font weight for balanced emphasis -->
+          <!-- drop-shadow-sm: Adds a small text shadow to improve readability over backgrounds -->
+
+          <!-- style="font-family: 'AirArabia', sans-serif;": Uses the custom AirArabia font, fallback to sans-serif -->
+
+          </p>
+
+          <!-- Language Selector -->
+          <div class="flex flex-wrap justify-center gap-3 mt-4">
+            <button id="lang-en" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
+              <i class="fas fa-globe mr-2"></i>English
+            </button>
+            <button id="lang-fr" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
+              <i class="fas fa-globe mr-2"></i>Français
+            </button>
+            <button id="lang-ar" class="px-5 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full text-sm font-semibold transition-all duration-300 backdrop-blur-sm shadow hover:shadow-md">
+              <i class="fas fa-globe mr-2"></i>العربية
+            </button>
+
+          <!-- This is the language selector section: horizontally centers language buttons with proper spacing, hover effects, and visual styling -->
+
+          <!-- flex: Places buttons side by side in a horizontal layout -->
+          <!-- flex-wrap: Allows buttons to wrap to the next line if space is insufficient -->
+          <!-- justify-center: Centers the buttons horizontally -->
+
+          <!-- gap-3: Adds spacing of 0.75rem (12px) between buttons -->
+          <!-- mt-4: Adds a top margin of 1rem (16px) to separate from elements above -->
+
+          <!-- px-5 py-2: Button padding — horizontal 1.25rem (20px), vertical 0.5rem (8px) -->
+          <!-- bg-white/10: Semi-transparent white background (10% opacity) -->
+          <!-- hover:bg-white/20: On hover, increases background opacity to 20% -->
+          <!-- text-white: White text color -->
+          <!-- rounded-full: Fully rounded button (pill shape) -->
+          <!-- text-sm: Small font size (0.875rem / 14px) -->
+          <!-- font-semibold: Semi-bold font weight for clearer button text -->
+          <!-- transition-all duration-300: Smooth transition of all properties over 300ms when hovering -->
+          <!-- backdrop-blur-sm: Adds a subtle blur behind the buttons for a glassmorphism effect -->
+          <!-- shadow: Adds a small shadow for button elevation -->
+          <!-- hover:shadow-md: Increases shadow size on hover for stronger visual feedback -->
+
+          <!-- <i class="fas fa-globe mr-2"></i>: Font Awesome globe icon with right margin of 0.5rem (8px) before the text -->
+
+          </div>
+
+        </div>
+    </header>
+
     <main class="flex-1 flex flex-col justify-between items-center px-4 pt-0 pb-4 min-h-0">
+    <!-- This is the main content area: vertically stacks content, centers it horizontally, and spaces elements between top and bottom with padding -->
+
+    <!-- flex flex-col: Enables Flexbox layout and stacks child elements vertically -->
+    <!-- justify-between: Pushes first child to top and last child to bottom, space between them -->
+    <!-- items-center: Horizontally centers child elements within the container -->
+
+    <!-- flex-1: Allows this section to grow and fill available vertical space -->
+    <!-- min-h-0: Allows child elements to shrink properly and prevents overflow issues -->
+
+    <!-- px-4: Adds horizontal padding of 1rem (4 * 0.25rem = 16px) on left and right sides -->
+    <!-- pt-0: Removes top padding (padding-top: 0) -->
+    <!-- pb-4: Adds bottom padding of 1rem (4 * 0.25rem = 16px) -->
+
+
 
       <div class="w-full max-w-4xl bg-white rounded-b-2xl shadow-xl border border-gray-100 flex flex-col flex-1 overflow-hidden min-h-0">
-        <!-- Chat Messages with Custom Scrollbar -->
+      <!-- This is a main content container: takes full width, limits max width for readability, applies white background with rounded bottom corners, shadow, and border. Layout is vertical with flexible sizing and hidden overflow. -->
+
+      <!-- flex flex-col: Enables Flexbox layout with vertical stacking of child elements -->
+      <!-- flex-1: Allows the container to expand and fill available vertical space -->
+      <!-- overflow-hidden: Hides any overflowing child content (prevents scrollbars or visual overflow) -->
+      <!-- min-h-0: Allows the container to shrink properly in a constrained flex layout -->
+
+      <!-- w-full: Makes the container take the full available width of its parent -->
+      <!-- max-w-4xl: Limits the maximum width to 56rem (896px) for better readability on large screens -->
+
+      <!-- bg-white: Sets background color to white -->
+      <!-- rounded-b-2xl: Rounds only the bottom corners with a large radius (2xl = 1rem = 16px) -->
+      <!-- shadow-xl: Adds an extra-large shadow for strong elevation effect -->
+      <!-- border border-gray-100: Adds a thin light-gray border for subtle separation -->
+
+
         <div id="chat-messages" class="flex-grow flex flex-col gap-4 p-6 overflow-y-auto scrollbar-custom">
-          <!-- Test message to verify visibility -->
-          <!-- <div class="chat-bubble bot message-animate">
-            👋 Hi! I'm your Air Arabica assistant. How can I help you today?
-          </div> -->
+          <!-- This is the chat messages container: vertically stacks chat bubbles, grows to fill available space, adds scrolling when overflowing, and applies custom scrollbar styling -->
+
+          <!-- flex flex-col: Enables Flexbox layout with vertical stacking of chat messages -->
+          <!-- flex-grow: Allows this container to grow and fill remaining space in its flex parent -->
+          <!-- gap-4: Adds vertical spacing of 1rem (4 * 0.25rem = 16px) between messages -->
+          <!-- p-6: Adds internal padding of 1.5rem (6 * 0.25rem = 24px) on all sides -->
+          <!-- overflow-y-auto: Enables vertical scrolling when content overflows -->
+          <!-- scrollbar-custom: Applies custom scrollbar styling (defined elsewhere in CSS) -->
         </div>
 
 
-        <!-- Enhanced Quick Suggestions -->
         <div id="quick-suggestions" class="grid grid-cols-4 gap-3 px-6 py-4 border-t border-gray-100 bg-gray-50">
           <button id="btn-booking" class=" quick-suggestion px-4 py-2 bg-white rounded-full text-xs sm:text-sm font-medium flex items-center justify-center gap-2">
             <i class="fas fa-calendar-alt text-[#d71920]"></i>
@@ -277,10 +196,31 @@
             <i class="fas fa-wheelchair text-[#d71920]"></i>
             <span></span>
           </button>
+
+          <!-- This is the quick suggestions section: displays pre-defined action buttons in a grid layout for easy user interaction -->
+
+          <!-- grid grid-cols-4: Uses CSS Grid layout with 4 equal columns for the buttons -->
+          <!-- gap-3: Adds spacing of 0.75rem (12px) between grid items -->
+          <!-- px-6 py-4: Adds horizontal padding of 1.5rem (24px) and vertical padding of 1rem (16px) -->
+          <!-- border-t border-gray-100: Adds a thin top border with light gray color to separate from chat area -->
+          <!-- bg-gray-50: Light gray background for the suggestions area -->
+
+          <!-- Button Styling (common for all buttons) -->
+          <!-- quick-suggestion: Likely used by JS to add interactivity or animations -->
+          <!-- px-4 py-2: Padding inside buttons — horizontal 1rem (16px), vertical 0.5rem (8px) -->
+          <!-- bg-white: White background for button -->
+          <!-- rounded-full: Fully rounded pill-shaped buttons -->
+          <!-- text-xs sm:text-sm: Small font size by default (0.75rem = 12px), increases to 0.875rem (14px) on small screens -->
+          <!-- font-medium: Medium font weight for better text visibility -->
+          <!-- flex items-center justify-center: Horizontally centers icon and text within the button -->
+          <!-- gap-2: Adds horizontal spacing of 0.5rem (8px) between icon and text -->
+
+          <!-- <i> tags: Font Awesome icons with brand color text-[#d71920] (custom red color) -->
+          <!-- <span>: Holds the button label, probably dynamically filled by JavaScript -->
+
         </div>
 
 
-        <!-- Enhanced Chat Input -->
         <div class="p-3 border-t border-gray-100 bg-white rounded-b-2xl">
           <div class="input-wrapper flex items-center gap-2 p-1 w-full">
             <button class="p-2 text-gray-500 hover:text-gray-700 transition-colors">
@@ -298,13 +238,54 @@
             >
               <i class="fas fa-paper-plane text-lg"></i>
             </button>
-          </div>
+          <!-- This is the message input area: holds the emoji button, text input, and send button with proper spacing and alignment -->
 
+          <!-- p-3: Adds padding of 0.75rem (12px) around the input area -->
+          <!-- border-t border-gray-100: Thin top border to visually separate from chat messages -->
+          <!-- bg-white: White background for the input area -->
+          <!-- rounded-b-2xl: Rounds the bottom corners for a smooth visual finish -->
+
+          <!-- input-wrapper -->
+          <!-- flex items-center: Places children (emoji button, input, send button) horizontally and vertically centers them -->
+          <!-- gap-2: Adds spacing of 0.5rem (8px) between children -->
+          <!-- p-1: Padding around the content (4px) -->
+          <!-- w-full: Makes the wrapper take the full available width -->
+
+          <!-- Emoji Button -->
+          <!-- p-2: Padding of 0.5rem (8px) around the icon -->
+          <!-- text-gray-500: Default icon color (light gray) -->
+          <!-- hover:text-gray-700: Darkens icon color on hover -->
+          <!-- transition-colors: Smooth color transition on hover -->
+          <!-- <i class="far fa-smile text-xl"></i>: Smile emoji icon with font size 1.25rem (20px) -->
+
+          <!-- Input Field -->
+          <!-- flex-1: Expands to fill remaining horizontal space -->
+          <!-- min-w-0: Prevents flex item from growing beyond container size -->
+          <!-- px-3 py-1: Horizontal padding of 0.75rem (12px), vertical padding of 0.25rem (4px) -->
+          <!-- text-base: Font size 1rem (16px) -->
+          <!-- bg-transparent: Transparent background -->
+          <!-- border-none: Removes default input border -->
+          <!-- focus:outline-none focus:ring-0: Removes focus outline and ring on click/focus -->
+
+          <!-- Send Button -->
+          <!-- w-12 h-12: Fixed width and height of 3rem (48px) -->
+          <!-- flex-shrink-0: Prevents the button from shrinking when space is limited -->
+          <!-- flex items-center justify-center: Centers the icon inside the button -->
+          <!-- bg-[#d71920]: Custom red background color -->
+          <!-- text-white: White icon color -->
+          <!-- rounded-full: Fully rounded button -->
+          <!-- hover:bg-[#b5151b]: Darker red on hover -->
+          <!-- transition-colors: Smooth color transition on hover -->
+          <!-- disabled:opacity-50: Reduces opacity when disabled -->
+          <!-- disabled:cursor-not-allowed: Shows 'not-allowed' cursor when disabled -->
+          <!-- <i class="fas fa-paper-plane text-lg"></i>: Send (paper plane) icon with font size 1.125rem (18px) -->
+
+
+          </div>
         </div>
       </div>
     </main>
 
-    <!-- Enhanced Footer -->
     <footer class="text-center py-2 bg-white border-t border-gray-100">
       <div class="max-w-4xl mx-auto px-4">
         <p class="text-[8px] sm:text-sm text-gray-600">
@@ -313,8 +294,31 @@
           Made with  <i class="fas fa-heart text-[#d71920]"></i>  by Amine BENKIRANE
         </p>
       </div>
+
+    <!-- This is the footer section: centered text with small font, light styling, and a heart icon for branding flair -->
+
+    <!-- text-center: Centers all text horizontally in the footer -->
+    <!-- py-2: Adds vertical padding of 0.5rem (8px) -->
+    <!-- bg-white: White background color -->
+    <!-- border-t border-gray-100: Thin top border in light gray to separate footer from main content -->
+
+    <!-- max-w-4xl: Limits content width to 56rem (896px) for readability -->
+    <!-- mx-auto: Centers the footer content horizontally -->
+    <!-- px-4: Adds horizontal padding of 1rem (16px) on left and right sides -->
+
+    <!-- text-[8px]: Very small base font size (8px) -->
+    <!-- sm:text-sm: On small screens and up, increases font size to 0.875rem (14px) -->
+    <!-- text-gray-600: Medium gray text color for softer appearance -->
+
+    <!-- <span class="font-medium">: Applies medium font weight to highlight 'Air Arabica' -->
+    <!-- <span class="text-[#d71920]">: Highlights 'AI-Powered Customer Service' in custom red color -->
+    <!-- <i class="fas fa-heart text-[#d71920]"></i>: Heart icon with custom red color for a friendly touch -->
+
     </footer>
 
-    <script src="./static/js/script.js" defer></script>
+    <!-- JS Scripts -->
+    <script src="/static/js/ui.js" defer></script>
+    <script src="/static/js/chat.js" defer></script>
+    
   </body>
 </html>

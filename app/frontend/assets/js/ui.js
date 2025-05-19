@@ -1,46 +1,30 @@
+
 // ==============================
 // ELEMENT SELECTORS
 // ==============================
+
 const sendButton = document.getElementById('send-button');
 const chatbox = document.getElementById('chat-messages');
 const inputField = document.getElementById('chat-input');
 
 // ==============================
-// SESSION ID BY PAGE LOAD
-// ==============================
-const sessionID = crypto.randomUUID();
-
-// ==============================
 // EVENT LISTENERS
 // ==============================
 
-function setVh() {
-  const vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', `${vh}px`);
-}
-
 window.addEventListener('resize', setVh);
 window.addEventListener('orientationchange', setVh);
-
-
 window.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM Content Loaded');
-  setVh(); // Call on initial load
+  setVh();
   initLanguageSettings();
   initLanguageButtons();
   displayWelcomeContent();
-  // Focus input on load
   inputField.focus();
 });
 
-sendButton.addEventListener('click', handleSend);
-inputField.addEventListener('keydown', (e) => {
-  if (e.key === "Enter") handleSend();
-});
+// ==============================
+// TRANSLATION SETTINGS
+// ==============================
 
-// ==============================
-// LANGUAGE SETTINGS
-// ==============================
 const translations = {
   en: {
     title: "Air Arabica",
@@ -52,9 +36,7 @@ const translations = {
       delay: "Delays & Cancellations",
       assistance: "Special Assistance"
     },
-
     responses: {
-
       booking: [
         "Booking channels", "Ok to Board", "Airport Terminals", "Payment", "Credit use", "Fare types",
         "Modification", "Cancellation", "Name change", "Refund", "Infants", "Unaccompanied minor",
@@ -73,6 +55,7 @@ const translations = {
       ]
     }
   },
+
   fr: {
     title: "Air Arabica",
     subtitle: "Votre assistant de voyage virtuel 24h/24 et 7j/7",
@@ -83,7 +66,6 @@ const translations = {
       delay: "Retards et annulations",
       assistance: "Assistance spéciale"
     },
-
     responses: {
       booking: [
         "Canaux de réservation", "Ok to Board", "Terminaux aéroportuaires", "Paiement", "Utilisation du crédit", "Types de tarifs",
@@ -100,7 +82,6 @@ const translations = {
       ],
       assistance: [
         "Femmes enceintes", "Assistance en fauteuil roulant", "Poussette pour bébé", "Passagers ayant des besoins spéciaux"
-
       ]
     }
   },
@@ -115,7 +96,6 @@ const translations = {
       delay: "تأخيرات الرحلات والإلغاءات",
       assistance: "المساعدة الخاصة"
     },
-
     responses: {
       booking: [
         "قنوات الحجز", "الموافقة على الصعود", "صالات المطار", "الدفع", "استخدام الرصيد", "أنواع الأسعار",
@@ -132,21 +112,23 @@ const translations = {
       ],
       assistance: [
         "النساء الحوامل", "دعم الكراسي المتحركة", "عربة أطفال", "الركاب ذوو الاحتياجات الخاصة"
-
       ]
     }
   }
 };
 
+
+// ==============================
+// LANGUAGE INITIALIZATION
+// ==============================
+
 function initLanguageSettings() {
   const lang = localStorage.getItem('chatLang') || 'en';
   const t = translations[lang];
 
-  // Update header content
   document.querySelector('header h1').innerText = t.title;
   document.querySelector('header p').innerText = t.subtitle;
 
-  // Correct Button IDs and Labels
   const buttonMap = {
     'btn-booking': t.buttons.booking,
     'btn-baggage': t.buttons.baggage,
@@ -158,11 +140,10 @@ function initLanguageSettings() {
     const btn = document.getElementById(id);
     if (btn) {
       const icon = btn.querySelector('i');
-      btn.innerHTML = icon.outerHTML + ' ' + text;
+      btn.innerHTML = `${icon.outerHTML} ${text}`;
     }
   });
 }
-
 
 function initLanguageButtons() {
   const langButtons = {
@@ -172,70 +153,92 @@ function initLanguageButtons() {
   };
 
   Object.entries(langButtons).forEach(([lang, btn]) => {
-    if (btn) btn.addEventListener('click', () => {
-      localStorage.setItem('chatLang', lang);
-      location.reload();
-    });
+    if (btn) {
+      btn.addEventListener('click', () => {
+        localStorage.setItem('chatLang', lang);
+        location.reload();
+      });
+    }
   });
 }
 
 function displayWelcomeContent() {
-  // Check if the welcome message already exists
   const lang = localStorage.getItem('chatLang') || 'en';
   const welcomeText = translations[lang].welcome;
 
-  // Look for an existing bot message with the welcome text
-  const existing = Array.from(chatbox.getElementsByClassName('chat-bubble'))
+  const exists = Array.from(chatbox.getElementsByClassName('chat-bubble'))
     .some(bubble => bubble.classList.contains('bot') && bubble.innerText.trim() === welcomeText);
 
-  if (!existing) {
-    appendBotMessage(welcomeText);
-  }
+  if (!exists) appendBotMessage(welcomeText);
 }
 
 // ==============================
-// SEND MESSAGE HANDLER
+// UI HELPERS
 // ==============================
-function handleSend() {
-  const message = inputField.value.trim();
-  if (!message) {
-    inputField.classList.add("border-red-400");
-    inputField.placeholder = "Please type something...";
-    return;
-  }
 
-  inputField.classList.remove("border-red-400");
-  inputField.placeholder = "Type your message...";
-  appendUserMessage(message);
-  inputField.value = "";
-  toggleInput(false);
+function setVh() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
 
-  const loadingBubble = createLoadingBubble();
-  chatbox.appendChild(loadingBubble);
+function toggleInput(state) {
+  inputField.disabled = !state;
+  sendButton.disabled = !state;
+  if (state) inputField.focus();
+}
+
+function scrollToBottom() {
+  chatbox.scrollTop = chatbox.scrollHeight;
+}
+
+function createLoadingBubble() {
+  const loading = document.createElement('div');
+  loading.className = "typing-indicator message-animate";
+  loading.innerHTML = `
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>
+    <div class="typing-dot"></div>`;
+  return loading;
+}
+
+// ==============================
+// MESSAGE APPENDING FUNCTIONS
+// ==============================
+
+function appendUserMessage(msg) {
+  const bubble = document.createElement('div');
+  bubble.className = "chat-bubble user message-animate";
+  bubble.innerText = msg;
+  chatbox.appendChild(bubble);
   scrollToBottom();
+}
 
-  fetch("/chat", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ session_id: sessionID, query: message })
-  })
-    .then(res => res.json())
-    .then(data => {
-      chatbox.removeChild(loadingBubble);
-      appendBotMessage(data.answer);
-    })
-    .catch(() => {
-      chatbox.removeChild(loadingBubble);
-      appendErrorMessage("⚠️ An error occurred. Please try again later.");
-    })
-    .finally(() => {
-      toggleInput(true);
-      scrollToBottom();
-    });
+function appendBotMessage(msg) {
+  const bubble = document.createElement('div');
+  bubble.className = "chat-bubble bot message-animate";
+  bubble.innerText = msg;
+  chatbox.appendChild(bubble);
+  scrollToBottom();
+}
+
+function appendErrorMessage(msg) {
+  const bubble = document.createElement('div');
+  bubble.className = "chat-bubble bot bg-red-50 text-red-600 border border-red-200 message-animate";
+  bubble.innerText = msg;
+  chatbox.appendChild(bubble);
+  scrollToBottom();
+}
+
+function appendBotMessageHTML(htmlContent) {
+  const bubble = document.createElement('div');
+  bubble.className = "chat-bubble bot message-animate";
+  bubble.innerHTML = htmlContent;
+  chatbox.appendChild(bubble);
+  scrollToBottom();
 }
 
 // ==============================
-// Suggestion Buttons Click handler
+// SUGGESTION BUTTON HANDLING
 // ==============================
 
 function handleSuggestion(category) {
@@ -266,78 +269,16 @@ function handleSuggestion(category) {
         <ul class="bullet-list mt-2">
           ${items.map(item => `<li>${item}</li>`).join('')}
         </ul>
-      </div>
-    `;
+      </div>`;
 
-
-    
     appendBotMessageHTML(responseHTML);
   }, 1200);
 }
 
-function appendBotMessageHTML(htmlContent) {
-  const bubble = document.createElement('div');
-  bubble.className = "chat-bubble bot message-animate";
-  bubble.innerHTML = htmlContent;
-  chatbox.appendChild(bubble);
-  scrollToBottom();
-}
-
+// Attach event listeners to quick suggestion buttons
 document.querySelectorAll('#quick-suggestions button').forEach(btn => {
   btn.addEventListener('click', () => {
     const id = btn.id.replace('btn-', '');
     handleSuggestion(id);
   });
 });
-
-
-
-
-// ==============================
-// UI HELPERS
-// ==============================
-function toggleInput(state) {
-  inputField.disabled = !state;
-  sendButton.disabled = !state;
-  if (state) inputField.focus();
-}
-
-function scrollToBottom() {
-  chatbox.scrollTop = chatbox.scrollHeight;
-}
-
-function appendUserMessage(msg) {
-  const bubble = document.createElement('div');
-  bubble.className = "chat-bubble user message-animate";
-  bubble.innerText = msg;
-  chatbox.appendChild(bubble);
-  scrollToBottom();
-}
-
-function appendBotMessage(msg) {
-  console.log('Appending bot message:', msg);
-  const bubble = document.createElement('div');
-  bubble.className = "chat-bubble bot message-animate";
-  bubble.innerText = msg;
-  chatbox.appendChild(bubble);
-  scrollToBottom();
-}
-
-function appendErrorMessage(msg) {
-  const bubble = document.createElement('div');
-  bubble.className = "chat-bubble bot bg-red-50 text-red-600 border border-red-200 message-animate";
-  bubble.innerText = msg;
-  chatbox.appendChild(bubble);
-  scrollToBottom();
-}
-
-function createLoadingBubble() {
-  const loading = document.createElement('div');
-  loading.className = "typing-indicator message-animate";
-  loading.innerHTML = `
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-    <div class="typing-dot"></div>
-  `;
-  return loading;
-}
